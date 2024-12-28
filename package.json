@@ -8,7 +8,9 @@
   },
   "dependencies": {
     "express": "^4.18.2",
-    "cors": "^2.8.5"
+    "cors": "^2.8.5",
+    "faunadb": "^4.0.0",  // Dipendenza necessaria, per esempio faunadb
+    "some-other-package": "^1.2.3"
   },
   "devDependencies": {},
   "engines": {
