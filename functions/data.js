@@ -1,22 +1,25 @@
-const fs = require('fs').promises;
-const path = require('path');
+// netlify/functions/data.js
 
-// Usa un percorso relativo per il file
-const jsonFilePath = path.join(__dirname, 'data.json');
-
-exports.handler = async function(event) {
+exports.handler = async function(event, context) {
   try {
-    const data = await fs.readFile(jsonFilePath, 'utf8');
-    const currentData = JSON.parse(data);
+    const data = { message: 'Dati caricati con successo' };
 
     return {
       statusCode: 200,
-      body: JSON.stringify(currentData)
+      body: JSON.stringify(data),
+      headers: {
+        'Access-Control-Allow-Origin': '*',  // Permetti tutte le origini
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      }
     };
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Errore nella lettura del file', details: err.message })
+      body: JSON.stringify({ error: 'Errore interno', details: err.message }),
+      headers: {
+        'Access-Control-Allow-Origin': '*',  // Permetti tutte le origini anche in caso di errore
+      }
     };
   }
 };
