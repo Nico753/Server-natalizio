@@ -1,36 +1,37 @@
-const fs = require('fs').promises;
-const path = require('path');
+const faunadb = require('faunadb');
+const q = faunadb.query;
 
-// Percorso al file JSON
-const jsonFilePath = path.join(__dirname, '../public/data.json');
+const client = new faunadb.Client({
+  secret: process.env.FAUNADB_SECRET_KEY,  // Usa la chiave segreta
+});
 
 exports.handler = async function(event) {
   if (event.httpMethod === 'POST') {
     const newUser = JSON.parse(event.body);
 
     try {
-      const data = await fs.readFile(jsonFilePath, 'utf8');
-      const currentData = JSON.parse(data);
-
-      // Aggiungi il nuovo utente
-      currentData.Users.push(newUser);
-
-      // Scrivi i dati aggiornati nel file JSON
-      await fs.writeFile(jsonFilePath, JSON.stringify(currentData, null, 2));
+      // Aggiungi il nuovo utente alla collezione "Users"
+      const result = await client.query(
+        q.Create(
+          q.Collection('Users'),  // Nome della collezione in FaunaDB
+          { data: newUser }  // Dati dell'utente da aggiungere
+        )
+      );
 
       return {
         statusCode: 200,
-        body: JSON.stringify({ message: 'Nuovo utente aggiunto', newUser })
+        body: JSON.stringify({ message: 'Nuovo utente aggiunto', newUser }),
       };
     } catch (err) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'Errore nella scrittura del file', details: err.message })
+        body: JSON.stringify({ error: 'Errore nel salvataggio nel database', details: err.message }),
       };
     }
   }
+
   return {
     statusCode: 405,
-    body: JSON.stringify({ error: 'Metodo non supportato' })
+    body: JSON.stringify({ error: 'Metodo non supportato' }),
   };
 };
