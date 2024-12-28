@@ -14,22 +14,6 @@ app.use(cors());
 // Percorso del file JSON
 const jsonFilePath = path.join(__dirname, 'data.json');
 
-// Endpoint GET per la home page
-app.get('/', (req, res) => {
-  res.send(`
-    <html>
-      <head>
-        <title>Benvenuto</title>
-      </head>
-      <body>
-        <h1>Benvenuto nel nostro server!</h1>
-        <p>Accedi a /data per vedere i dati o a /add-to-cart/:userId per aggiungere un prodotto al carrello.</p>
-        <p>Accedi a /add-user per aggiungere un nuovo utente al sistema.</p>
-      </body>
-    </html>
-  `);
-});
-
 // Endpoint GET per leggere il file JSON
 app.get('/data', (req, res) => {
   fs.readFile(jsonFilePath, 'utf8', (err, data) => {
