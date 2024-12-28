@@ -1,16 +1,16 @@
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
-// Percorso al file JSON che si trova nella cartella 'public'
+// Percorso al file JSON
 const jsonFilePath = path.join(__dirname, '../public/data.json');
 
-exports.handler = async function(event, context) {
+exports.handler = async function(event) {
   if (event.httpMethod === 'POST') {
     const userId = event.queryStringParameters.userId;
     const product = JSON.parse(event.body);
 
     try {
-      const data = fs.readFileSync(jsonFilePath, 'utf8');
+      const data = await fs.readFile(jsonFilePath, 'utf8');
       const currentData = JSON.parse(data);
 
       // Trova l'utente
@@ -22,11 +22,11 @@ exports.handler = async function(event, context) {
         };
       }
 
-      // Aggiungi il prodotto al carrello dell'utente
+      // Aggiungi il prodotto al carrello
       user.shoppingCart.push(product);
 
       // Scrivi i dati aggiornati nel file JSON
-      fs.writeFileSync(jsonFilePath, JSON.stringify(currentData, null, 2), 'utf8');
+      await fs.writeFile(jsonFilePath, JSON.stringify(currentData, null, 2));
 
       return {
         statusCode: 200,
@@ -35,7 +35,7 @@ exports.handler = async function(event, context) {
     } catch (err) {
       return {
         statusCode: 500,
-        body: JSON.stringify({ error: 'Errore nella lettura o scrittura del file' })
+        body: JSON.stringify({ error: 'Errore nella lettura o scrittura del file', details: err.message })
       };
     }
   }
@@ -44,3 +44,4 @@ exports.handler = async function(event, context) {
     body: JSON.stringify({ error: 'Metodo non supportato' })
   };
 };
+
