@@ -2,7 +2,7 @@ const faunadb = require('faunadb');
 const q = faunadb.query;
 
 const client = new faunadb.Client({
-  secret: process.env.FAUNADB_SECRET_KEY,  // Usa la chiave segreta
+  secret: process.env.fnAFzueviqAA0FVJasZl8HNxcLl9cbkU8WZi3naF,  // Usa la chiave segreta
 });
 
 exports.handler = async function(event) {
