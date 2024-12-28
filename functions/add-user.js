@@ -23,6 +23,11 @@ exports.handler = async function(event, context) {
       return {
         statusCode: 200,
         body: JSON.stringify({ message: 'Nuovo utente aggiunto', newUser })
+        headers: {
+        'Access-Control-Allow-Origin': '*',  // Permetti tutte le origini
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type',
+      }
       };
     } catch (err) {
       return {
