@@ -1,8 +1,13 @@
+const fs = require('fs').promises;
+const path = require('path');
+
+// Usa un percorso relativo per il file
+const jsonFilePath = path.join(__dirname, 'data.json');
+
 exports.handler = async function(event) {
   try {
-    // Usa il percorso relativo per il file statico, che è disponibile pubblicamente
-    const data = await fetch('https://yoursite.netlify.app/data.json');
-    const currentData = await data.json();
+    const data = await fs.readFile(jsonFilePath, 'utf8');
+    const currentData = JSON.parse(data);
 
     return {
       statusCode: 200,
@@ -11,7 +16,7 @@ exports.handler = async function(event) {
   } catch (err) {
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: 'Errore nel recuperare il file', details: err.message })
+      body: JSON.stringify({ error: 'Errore nella lettura del file', details: err.message })
     };
   }
 };
