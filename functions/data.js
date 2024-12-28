@@ -1,7 +1,7 @@
 exports.handler = async function(event, context) {
   try {
     // Fai una richiesta HTTP per ottenere il contenuto di data.json
-    const response = await fetch('https://yoursite.netlify.app/data.json');
+    const response = await fetch('https://json-server-natale.netlify.app/data.json');
     
     // Verifica che la richiesta sia andata a buon fine
     if (!response.ok) {
