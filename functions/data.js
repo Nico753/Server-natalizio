@@ -1,8 +1,15 @@
-// netlify/functions/data.js
-
 exports.handler = async function(event, context) {
   try {
-    const data = { message: 'Dati caricati con successo' };
+    // Fai una richiesta HTTP per ottenere il contenuto di data.json
+    const response = await fetch('https://yoursite.netlify.app/data.json');
+    
+    // Verifica che la richiesta sia andata a buon fine
+    if (!response.ok) {
+      throw new Error(`Errore nel recuperare il file: ${response.statusText}`);
+    }
+
+    // Estrai i dati JSON dalla risposta
+    const data = await response.json();
 
     return {
       statusCode: 200,
