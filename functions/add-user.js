@@ -12,15 +12,6 @@ exports.handler = async function(event) {
       const data = await fs.readFile(jsonFilePath, 'utf8');
       const currentData = JSON.parse(data);
 
-      // Controlla se l'utente esiste già
-      const userExists = currentData.Users.some(u => u.email === newUser.email);
-      if (userExists) {
-        return {
-          statusCode: 400,
-          body: JSON.stringify({ error: 'Utente già esistente' })
-        };
-      }
-
       // Aggiungi il nuovo utente
       currentData.Users.push(newUser);
 
