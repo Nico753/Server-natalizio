@@ -1,1 +1,10 @@
+[build]
+  functions = "functions"
+  publish = "public"
+
+[[redirects]]
+  from = "/data.json"
+  to = "/public/data.json"
+  status = 200
+  force = true
 
